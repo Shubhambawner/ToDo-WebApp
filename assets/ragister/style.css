@@ -52,6 +52,27 @@ h1 {
 .addButton:hover {
 	opacity: 0.7;
 }
+.radioButton {
+	height: 50px;
+	width: 50px;
+	border-radius: 25px;
+	outline: none;
+	border: none;
+	color: rgba(255, 255, 255, 0);
+	font-size: 30px;
+	margin: 0.25rem;
+	background-color: rgb(38, 11, 158);
+	cursor: pointer;
+}
+.radioButton:hover {
+	opacity: 0.7;
+}
+.red{
+	background-color: #e00;
+}
+.green{
+	background-color: #0e0;
+}
 .container {
 	display: flex;
 	flex-direction: column;

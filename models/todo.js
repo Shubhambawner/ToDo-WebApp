@@ -6,7 +6,9 @@ const TodoSchema = new mongoose.Schema({
 		type: Number,
 		default: Date.now
 	},
-	user_ID:{ type: Number, required: true }
+	user_ID:{ type: Number, required: true },
+	complete:{type: Boolean, default: false},
+	priority:{type:String, default: "Medium"}
 })
 
 

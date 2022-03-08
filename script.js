@@ -17,7 +17,7 @@ app.use(bodyParser.json())
 
 app.post('/auth/login', async (req, res) => {
 	const user = await Auth.findOne(req.body)
-	console.log(user);
+	//console.log(user);
 	if (user)
 		res.json({ status: 'authorisation successfull !  now you are loged inn ', user_ID: user.user_ID })
 	else
@@ -29,7 +29,7 @@ app.post('/auth/login', async (req, res) => {
  */
 app.post('/auth/ragister', async (req, res) => {
 	const user = req.body
-	console.log(req.body)
+	//console.log(req.body)
 
 	// * CREATE (_C_RUD)
 	if (await Auth.findOne(user))
@@ -37,20 +37,20 @@ app.post('/auth/ragister', async (req, res) => {
 	else
 		responseUser = await Auth.create(req.body) //POST
 
-	console.log(responseUser)
+	//console.log(responseUser)
 
 	res.json({ status: 'ragistration successfull !  now please login ' }) //* how to access this in frontend? if its a fetch request, do .then(r=>r.json())
 })
 
 
 const authorise = async (user_ID) => {
-	console.log((typeof user_ID == 'Number'),typeof user_ID, user_ID)
+	//console.log((typeof user_ID == 'Number'), typeof user_ID, user_ID)
 	if (typeof user_ID == 'number' || typeof user_ID == 'string') {
-		console.log(user_ID, typeof user_ID == 'Number')
+		//console.log(user_ID, typeof user_ID == 'Number')
 		isAuth = await Auth.findOne({ user_ID: user_ID })
 		return true;
 	} else {
-		console.log(false)
+		//console.log(false)
 		return false;
 	}
 	//if(!isAuth)
@@ -60,7 +60,7 @@ const authorise = async (user_ID) => {
 app.get('/api/get', async (req, res) => {
 	let isAuth = await authorise(req.query.user_ID)
 	if (isAuth) {
-		const records = await Todo.find({user_ID : req.query.user_ID}) //GET
+		const records = await Todo.find({ user_ID: req.query.user_ID }) //GET
 		//console.log('Response => ', records)
 		res.json(records)
 	} else {
@@ -70,7 +70,7 @@ app.get('/api/get', async (req, res) => {
 
 app.post('/api/delete', async (req, res) => {
 	let isAuth = await authorise(req.query.user_ID)
-	if (isAuth)  {
+	if (isAuth) {
 		const { record } = req.body
 		//onsole.log(record, '/api/delete')
 
@@ -86,21 +86,51 @@ app.post('/api/delete', async (req, res) => {
 
 app.post('/api/modify', async (req, res) => {
 	let isAuth = await authorise(req.query.user_ID)
-	if (isAuth)  {
-		const { old: oldTitle, new: newTitle } = req.body
+	if (isAuth) {
+		let { old: title, new: newTitle, complete: complete, priority: priority } = req.body
 
-		const response = await Todo.updateOne( //POST
+		let response1, response2, response3;
+		if (newTitle) {
+			response1 = await Todo.updateOne( //POST
+				{
+					record: title
+				},
+				{
+					$set: {
+						record: newTitle,
+					}
+				}
+			)
+			title = newTitle;
+		}
+
+		if (complete==true || complete==false) {
+			response2 = await Todo.updateOne( //POST
+				{
+					record: title
+				},
+				{
+					$set: {
+						complete: complete,
+					}
+				}
+			)
+			console.log(complete, response2)
+
+		}
+
+		if (priority) response3 = await Todo.updateOne( //POST
 			{
-				record: oldTitle
+				record: title
 			},
 			{
 				$set: {
-					record: newTitle
+					priority: priority,
 				}
 			}
 		)
 
-		console.log(response)
+		console.log(response1, response2, response3)
 
 		res.json({ status: 'ok' })
 	} else {
@@ -110,14 +140,14 @@ app.post('/api/modify', async (req, res) => {
 
 app.post('/api/create', async (req, res) => {
 	let isAuth = await authorise(req.query.user_ID)
-	if (isAuth)  {
+	if (isAuth) {
 		const record = req.body
-		console.log(record)
+		//console.log(record)
 
 		// * CREATE (_C_RUD)
-		const response = await Todo.create({...record, user_ID : req.query.user_ID}) //POST
+		const response = await Todo.create({ ...record, user_ID: req.query.user_ID }) //POST
 
-		console.log(response)
+		//console.log(response)
 
 		res.json({ status: 'ok' })
 	} else {
