@@ -85,6 +85,9 @@ h1 {
 	padding: 0.5rem;
 	margin-bottom: 1.5rem;
 	border-bottom: 4px solid #fff;
+	display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 .item_input {
 	background: none;

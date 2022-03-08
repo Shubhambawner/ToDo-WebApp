@@ -27,7 +27,7 @@ class item {
 
 		let dropdown = document.createElement('div')
 		dropdown.innerHTML = 
-		`<select id = "${record.record}" >  <option hidden="">${record.priority}</option> <option> w3schools </option>  <option> Javatpoint </option>  <option> tutorialspoint </option>  <option> geeksforgeeks </option>  </select > `
+		`<select id = "${record.record}" >  <option hidden="">${record.priority}</option> <option> High </option>  <option> Medium </option>  <option> Low </option>  <option> urgent </option>  </select > `
 		console.log(record)
 		
 
@@ -38,10 +38,10 @@ class item {
 		container.appendChild(itemBox)
 
 		itemBox.appendChild(input)
+		itemBox.appendChild(dropdown)
 		itemBox.appendChild(radioButton)
 		itemBox.appendChild(editButton)
 		itemBox.appendChild(removeButton)
-		itemBox.appendChild(dropdown)
 
 		editButton.addEventListener('click', () => this.edit(input))
 		radioButton.addEventListener('click', () => this.editRadio(radioButton, input))
